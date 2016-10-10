@@ -10,25 +10,30 @@ import Foundation
 
 print("Enter an expression separated by returns:")
 
-//print(a==Double(Int(a)))
-func fact(n: Double) -> Double{
+func fact(n: Double) -> Int{
     if n==1{return 1}
-    return fact(n:(n-1))*n
-}
-
-func count(array: [Double]) -> Int {
-    return array.count
+    return fact(n:(n-1))*Int(n)
 }
 
 func avg(array: [Double]) -> Double {
-    if count(array:array)==0{return 0}
+    if array.count==0{return 0}
     var sum = array[0]
     var i = 1
     while i < array.count{
     sum += array[i]
         i+=1
     }
-    return sum/Double(count(array:array))
+    return sum/Double(array.count)
+}
+
+
+func transform_array(array:[String]) -> [Double]{
+    var transformed_array = [Double]()
+
+    for i in array{
+        transformed_array.append(Double(i)!)
+    }
+    return transformed_array
 }
 
 var inputs = [Double]()
@@ -73,13 +78,33 @@ else{
     print("Incorrect expression entered.")
 }
 
-if a>0 && a==Double(Int(a)){
-    print("Factorial of first number is \(fact(n:a))")
+print("Now, please try 'count','avg' or 'fact'")
+
+var statement = readLine(strippingNewline: true)!
+var entries = statement.components(separatedBy: " ")
+var command = entries.last
+
+entries.remove(at: entries.count-1)
+
+var transformed_entries = transform_array(array:entries)
+
+if command=="count"{
+    print(transformed_entries.count)
 }
 
-if b>0 && b==Double(Int(b)){
-    print("Factorial of second number is \(fact(n:b))")
+else if command == "avg"{
+    print(avg(array:transformed_entries))
 }
- 
-print("Count of inputs is \(count(array:inputs))")
-print("Average of inputs is \(avg(array:inputs))")
+
+else if command == "fact"{
+    if transformed_entries.count>1{
+        print("Sorry, 'fact' works on only 1 input at a time.")
+    }
+    else{
+        print(fact(n:transformed_entries[0]))
+    }
+}
+else{
+    print("Incorrect command. Valid ones are 'count','avg' and 'fact'")
+}
+
